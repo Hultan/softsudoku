@@ -1,12 +1,15 @@
 package sudoku
 
-import "testing"
+import (
+	sudoku2 "github.com/hultan/softsudoku/pkg/sudoku"
+	"testing"
+)
 
 // TestAddStandardRulesEmpty : Test add all standard rules to an empty sudoku game
 func TestAddStandardRulesEmpty(t *testing.T) {
-	sudoku := NewSudoku()
+	sudoku := sudoku2.NewSudoku()
 	for row:=1;row<=9;row++ {
-		rule, err := NewRowRule(row)
+		rule, err :=  sudoku2.NewRowRule(row)
 		if err != nil {
 			t.Error(err)
 		}
@@ -14,7 +17,7 @@ func TestAddStandardRulesEmpty(t *testing.T) {
 		sudoku.AddRule(rule)
 	}
 	for col:=1;col<=9;col++ {
-		rule, err := NewColumnRule(col)
+		rule, err := sudoku2.NewColumnRule(col)
 		if err != nil {
 			t.Error(err)
 		}
@@ -22,7 +25,7 @@ func TestAddStandardRulesEmpty(t *testing.T) {
 		sudoku.AddRule(rule)
 	}
 	for box:=1;box<=9;box++ {
-		rule, err := NewBoxRule(box)
+		rule, err := sudoku2.NewBoxRule(box)
 		if err != nil {
 			t.Error(err)
 		}
@@ -33,9 +36,9 @@ func TestAddStandardRulesEmpty(t *testing.T) {
 
 // TestRowRulesEmpty : Add and check all rows in an empty sudoku game
 func TestRowRulesEmpty(t *testing.T) {
-	sudoku := NewSudoku()
+	sudoku := sudoku2.NewSudoku()
 	for row:=1;row<=9;row++ {
-		rule, err := NewRowRule(row)
+		rule, err := sudoku2.NewRowRule(row)
 		if err != nil {
 			t.Error(err)
 		}
@@ -54,9 +57,9 @@ func TestRowRulesEmpty(t *testing.T) {
 
 // TestColumnRulesEmpty : Add and check all columns in an empty sudoku game
 func TestColumnRulesEmpty(t *testing.T) {
-	sudoku := NewSudoku()
+	sudoku := sudoku2.NewSudoku()
 	for col:=1;col<=9;col++ {
-		rule, err := NewColumnRule(col)
+		rule, err := sudoku2.NewColumnRule(col)
 		if err != nil {
 			t.Error(err)
 		}
@@ -75,9 +78,9 @@ func TestColumnRulesEmpty(t *testing.T) {
 
 // TestBoxRulesEmpty : Add and check all boxes in an empty sudoku game
 func TestBoxRulesEmpty(t *testing.T) {
-	sudoku := NewSudoku()
+	sudoku := sudoku2.NewSudoku()
 	for box:=1;box<=9;box++ {
-		rule, err := NewBoxRule(box)
+		rule, err := sudoku2.NewBoxRule(box)
 		if err != nil {
 			t.Error(err)
 		}

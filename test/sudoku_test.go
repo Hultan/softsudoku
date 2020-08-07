@@ -1,11 +1,12 @@
 package sudoku
 
 import (
+	sudoku2 "github.com/hultan/softsudoku/pkg/sudoku"
 	"testing"
 )
 
 func TestNewBoard(t *testing.T) {
-	board := NewSudoku()
+	board := sudoku2.NewSudoku()
 	for r := 1; r <= 9; r++ {
 		for c := 1; c <= 9; c++ {
 			got, err := board.GetValue(r, c)
@@ -13,14 +14,14 @@ func TestNewBoard(t *testing.T) {
 				t.Error(err)
 			}
 			if got != 0 {
-				t.Errorf("Row %d:Col %d is not 0 (%d)!", r, c, board.grid[r][c])
+				t.Errorf("Row %d:Col %d is not 0!", r, c)
 			}
 		}
 	}
 }
 
 func TestRowColFail(t *testing.T) {
-	board := NewSudoku()
+	board := sudoku2.NewSudoku()
 	got, err := board.GetValue(1, 10)
 	if err != nil && got == 0 {
 		// Expected result
@@ -30,7 +31,7 @@ func TestRowColFail(t *testing.T) {
 }
 
 func TestRowColValueFail(t *testing.T) {
-	board := NewSudoku()
+	board := sudoku2.NewSudoku()
 	err := board.SetValue(1, 8, 11)
 	if err != nil {
 		// Expected error
@@ -40,7 +41,7 @@ func TestRowColValueFail(t *testing.T) {
 }
 
 func TestSetCellValue(t *testing.T) {
-	board := NewSudoku()
+	board := sudoku2.NewSudoku()
 	for r := 1; r <= 9; r++ {
 		for c := 1; c <= 9; c++ {
 			for v := 1; v <= 9; v++ {
@@ -58,7 +59,7 @@ func TestSetCellValue(t *testing.T) {
 }
 
 func TestGiven(t *testing.T) {
-	board := NewSudoku()
+	board := sudoku2.NewSudoku()
 	for r := 1; r <= 9; r++ {
 		for c := 1; c <= 9; c++ {
 			for v := 1; v <= 9; v++ {
@@ -76,7 +77,7 @@ func TestGiven(t *testing.T) {
 }
 
 func TestBoxNotations(t *testing.T) {
-	board := NewSudoku()
+	board := sudoku2.NewSudoku()
 	for r := 1; r <= 9; r++ {
 		for c := 1; c <= 9; c++ {
 			for v := 1; v <= 9; v++ {
@@ -96,7 +97,7 @@ func TestBoxNotations(t *testing.T) {
 }
 
 func TestCellNotations(t *testing.T) {
-	board := NewSudoku()
+	board := sudoku2.NewSudoku()
 	for r := 1; r <= 9; r++ {
 		for c := 1; c <= 9; c++ {
 			for v := 1; v <= 9; v++ {
@@ -116,7 +117,7 @@ func TestCellNotations(t *testing.T) {
 }
 
 func TestIsNotFull(t *testing.T) {
-	board := NewSudoku()
+	board := sudoku2.NewSudoku()
 	got, err := board.IsFull()
 	if err != nil {
 		t.Error(err)
@@ -127,7 +128,7 @@ func TestIsNotFull(t *testing.T) {
 }
 
 func TestIsFull(t *testing.T) {
-	board := NewSudoku()
+	board := sudoku2.NewSudoku()
 	for r := 1; r <= 9; r++ {
 		for c := 1; c <= 9; c++ {
 			board.SetValue(r, c, 1)

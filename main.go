@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	sudoku "github.com/hultan/softsudoku/sudoku"
+	sudoku "github.com/hultan/softsudoku/pkg/sudoku"
 )
 
 func main() {
