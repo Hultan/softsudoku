@@ -22,36 +22,13 @@ func NewSudoku() *Sudoku {
 	sudoku := new(Sudoku)
 	for r := 0; r < 9; r++ {
 		for c := 0; c < 9; c++ {
-			sudoku.notation[r][c] = newNotation()
+			notation := new(notation)
+			notation.box = make(map[int]bool)
+			notation.cell = make(map[int]bool)
+			sudoku.notation[r][c] = notation
 		}
 	}
 	return sudoku
-}
-
-// newNotification : Create a new notification
-func newNotation() *notation {
-	notation := new(notation)
-	notation.box = make(map[int]bool)
-	notation.cell = make(map[int]bool)
-	return notation
-}
-
-// Add a rule to the sudoku rule set
-func (s *Sudoku) AddRule(rule Rule) {
-	s.rules = append(s.rules, rule)
-}
-
-// CheckRules : Check all rules
-func (s *Sudoku) CheckRules() (bool, error) {
-	result := true
-	for _, value := range s.rules {
-		ruleResult, err := value.Check(s)
-		if err != nil {
-			return false, err
-		}
-		result = result && ruleResult
-	}
-	return result, nil
 }
 
 // IsFull : Is the sudoku full?
@@ -177,6 +154,26 @@ func (s *Sudoku) SetSudoku(grid [9][9]int) {
 			s.SetValue(r,c,grid[r-1][c-1])
 		}
 	}
+}
+
+// RULE FUNCTIONS
+
+// AddRule : Add a rule to the sudoku rule set
+func (s *Sudoku) AddRule(rule Rule) {
+	s.rules = append(s.rules, rule)
+}
+
+// CheckRules : Check all rules
+func (s *Sudoku) CheckRules() (bool, error) {
+	result := true
+	for _, value := range s.rules {
+		ruleResult, err := value.Check(s)
+		if err != nil {
+			return false, err
+		}
+		result = result && ruleResult
+	}
+	return result, nil
 }
 
 //

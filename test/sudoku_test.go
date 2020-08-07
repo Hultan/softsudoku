@@ -1,12 +1,13 @@
 package sudoku
 
 import (
-	sudoku2 "github.com/hultan/softsudoku/pkg/sudoku"
+	softSudoku "github.com/hultan/softsudoku/pkg/sudoku"
 	"testing"
 )
 
+// TestRowColFail : Test to access all row/columns in an empty game
 func TestNewBoard(t *testing.T) {
-	board := sudoku2.NewSudoku()
+	board := softSudoku.NewSudoku()
 	for r := 1; r <= 9; r++ {
 		for c := 1; c <= 9; c++ {
 			got, err := board.GetValue(r, c)
@@ -20,8 +21,9 @@ func TestNewBoard(t *testing.T) {
 	}
 }
 
-func TestRowColFail(t *testing.T) {
-	board := sudoku2.NewSudoku()
+// TestGetValueFail : Test to access an invalid row/column (GetValue)
+func TestGetValueFail(t *testing.T) {
+	board := softSudoku.NewSudoku()
 	got, err := board.GetValue(1, 10)
 	if err != nil && got == 0 {
 		// Expected result
@@ -30,8 +32,9 @@ func TestRowColFail(t *testing.T) {
 	t.Error("Test should have failed!")
 }
 
-func TestRowColValueFail(t *testing.T) {
-	board := sudoku2.NewSudoku()
+// TestSetValueFail : Test to set an invalid row/column/value (SetValue)
+func TestSetValueFail(t *testing.T) {
+	board := softSudoku.NewSudoku()
 	err := board.SetValue(1, 8, 11)
 	if err != nil {
 		// Expected error
@@ -40,12 +43,16 @@ func TestRowColValueFail(t *testing.T) {
 	t.Error("Test should have failed!")
 }
 
-func TestSetCellValue(t *testing.T) {
-	board := sudoku2.NewSudoku()
+// TestSetValue : Test to set an invalid row/column/value (GetValue/SetValue)
+func TestSetValue(t *testing.T) {
+	board := softSudoku.NewSudoku()
 	for r := 1; r <= 9; r++ {
 		for c := 1; c <= 9; c++ {
 			for v := 1; v <= 9; v++ {
-				board.SetValue(r, c, v)
+				err:=board.SetValue(r, c, v)
+				if err!=nil {
+					t.Error(err)
+				}
 				got, err := board.GetValue(r, c)
 				if err != nil {
 					t.Error(err)
@@ -58,12 +65,16 @@ func TestSetCellValue(t *testing.T) {
 	}
 }
 
+// TestGiven : Test to get and set a given cell value
 func TestGiven(t *testing.T) {
-	board := sudoku2.NewSudoku()
+	board := softSudoku.NewSudoku()
 	for r := 1; r <= 9; r++ {
 		for c := 1; c <= 9; c++ {
 			for v := 1; v <= 9; v++ {
-				board.SetGiven(r, c, v)
+				err:=board.SetGiven(r, c, v)
+				if err!=nil {
+					t.Error(err)
+				}
 				got, err := board.GetGiven(r, c)
 				if err != nil {
 					t.Error(err)
@@ -76,12 +87,51 @@ func TestGiven(t *testing.T) {
 	}
 }
 
+// TestSetGivenFail : Test to set an invalid given cell value
+func TestSetGivenFail(t *testing.T) {
+	board := softSudoku.NewSudoku()
+	// Invalid value : 0
+	err:=board.SetGiven(5, 5, 0)
+	if err==nil {
+		t.Errorf("SetGiven(5,5,0) should fail!")
+	}
+	// Invalid value : 10
+	err=board.SetGiven(5, 5, 10)
+	if err==nil {
+		t.Errorf("SetGiven(5,5,10) should fail!")
+	}
+	// Invalid row : 0
+	err=board.SetGiven(0, 5, 5)
+	if err==nil {
+		t.Errorf("SetGiven(0,5,5) should fail!")
+	}
+	// Invalid row : 10
+	err=board.SetGiven(10, 5, 5)
+	if err==nil {
+		t.Errorf("SetGiven(10,5,5) should fail!")
+	}
+	// Invalid column : 0
+	err=board.SetGiven(5, 0, 5)
+	if err==nil {
+		t.Errorf("SetGiven(5,0,5) should fail!")
+	}
+	// Invalid column : 10
+	err=board.SetGiven(5, 10, 5)
+	if err==nil {
+		t.Errorf("SetGiven(5,10,5) should fail!")
+	}
+}
+
+// TestBoxNotations : Test to get and set box notations
 func TestBoxNotations(t *testing.T) {
-	board := sudoku2.NewSudoku()
+	board := softSudoku.NewSudoku()
 	for r := 1; r <= 9; r++ {
 		for c := 1; c <= 9; c++ {
 			for v := 1; v <= 9; v++ {
-				board.ToggleBoxNotation(r, c, v)
+				err:=board.ToggleBoxNotation(r, c, v)
+				if err!=nil {
+					t.Error(err)
+				}
 			}
 			got, err := board.GetBoxNotation(r, c)
 			if err != nil {
@@ -96,12 +146,16 @@ func TestBoxNotations(t *testing.T) {
 	}
 }
 
+// TestCellNotations : Test to get and set cell notations
 func TestCellNotations(t *testing.T) {
-	board := sudoku2.NewSudoku()
+	board := softSudoku.NewSudoku()
 	for r := 1; r <= 9; r++ {
 		for c := 1; c <= 9; c++ {
 			for v := 1; v <= 9; v++ {
-				board.ToggleCellNotation(r, c, v)
+				err:=board.ToggleCellNotation(r, c, v)
+				if err!=nil {
+					t.Error(err)
+				}
 			}
 			got, err := board.GetCellNotation(r, c)
 			if err != nil {
@@ -116,8 +170,9 @@ func TestCellNotations(t *testing.T) {
 	}
 }
 
+// TestIsNotFull : Test IsFull function on an empty game
 func TestIsNotFull(t *testing.T) {
-	board := sudoku2.NewSudoku()
+	board := softSudoku.NewSudoku()
 	got, err := board.IsFull()
 	if err != nil {
 		t.Error(err)
@@ -127,13 +182,10 @@ func TestIsNotFull(t *testing.T) {
 	}
 }
 
+// TestIsFull : Test IsFull function on a completed game
 func TestIsFull(t *testing.T) {
-	board := sudoku2.NewSudoku()
-	for r := 1; r <= 9; r++ {
-		for c := 1; c <= 9; c++ {
-			board.SetValue(r, c, 1)
-		}
-	}
+	board := softSudoku.NewSudoku()
+	setTestSudoku(board)
 
 	got, err := board.IsFull()
 	if err != nil {
