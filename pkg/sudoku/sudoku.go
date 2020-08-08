@@ -148,12 +148,17 @@ func (s *Sudoku) ToggleCellNotation(row, col, value int) error {
 }
 
 // SetSudoku : Fills the sudoku grid with the values provided
-func (s *Sudoku) SetSudoku(grid [9][9]int) {
+func (s *Sudoku) SetSudoku(grid [9][9]int) error {
 	for r := 1; r <= 9; r++ {
 		for c := 1; c <= 9; c++ {
-			s.SetValue(r,c,grid[r-1][c-1])
+			err:=s.SetValue(r,c,grid[r-1][c-1])
+			if err!=nil {
+				return err
+			}
 		}
 	}
+
+	return nil
 }
 
 // RULE FUNCTIONS

@@ -1,1 +1,1 @@
-A sudoku game, written in the go language.
+A sudoku game, written in the Go language.

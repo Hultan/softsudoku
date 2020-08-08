@@ -5,7 +5,11 @@ import (
 	"testing"
 )
 
-// TestRowColFail : Test to access all row/columns in an empty game
+//
+// NewSudoku function
+//
+
+// TestNewBoard : Test a new sudoku game
 func TestNewBoard(t *testing.T) {
 	board := softSudoku.NewSudoku()
 	for r := 1; r <= 9; r++ {
@@ -21,30 +25,12 @@ func TestNewBoard(t *testing.T) {
 	}
 }
 
-// TestGetValueFail : Test to access an invalid row/column (GetValue)
-func TestGetValueFail(t *testing.T) {
-	board := softSudoku.NewSudoku()
-	got, err := board.GetValue(1, 10)
-	if err != nil && got == 0 {
-		// Expected result
-		return
-	}
-	t.Error("Test should have failed!")
-}
+//
+// SetValue function
+//
 
-// TestSetValueFail : Test to set an invalid row/column/value (SetValue)
-func TestSetValueFail(t *testing.T) {
-	board := softSudoku.NewSudoku()
-	err := board.SetValue(1, 8, 11)
-	if err != nil {
-		// Expected error
-		return
-	}
-	t.Error("Test should have failed!")
-}
-
-// TestSetValue : Test to set an invalid row/column/value (GetValue/SetValue)
-func TestSetValue(t *testing.T) {
+// TestGetSetValue : Test to set and get an row/column/value
+func TestGetSetValue(t *testing.T) {
 	board := softSudoku.NewSudoku()
 	for r := 1; r <= 9; r++ {
 		for c := 1; c <= 9; c++ {
@@ -65,8 +51,62 @@ func TestSetValue(t *testing.T) {
 	}
 }
 
-// TestGiven : Test to get and set a given cell value
-func TestGiven(t *testing.T) {
+// TestGetValueFail : Test to get an invalid row/column
+func TestGetValueFail(t *testing.T) {
+	board := softSudoku.NewSudoku()
+	_,err := board.GetValue(0, 5)
+	if err == nil {
+		t.Error("GetValue(0,5) should have failed!")
+	}
+	_,err = board.GetValue(10, 5)
+	if err == nil {
+		t.Error("GetValue(10,5) should have failed!")
+	}
+	_,err = board.GetValue(5, 0)
+	if err == nil {
+		t.Error("GetValue(5,0) should have failed!")
+	}
+	_,err = board.GetValue(5, 10)
+	if err == nil {
+		t.Error("GetValue(5,10) should have failed!")
+	}
+}
+
+// TestSetValueFail : Test to set an invalid row/column/value
+func TestSetValueFail(t *testing.T) {
+	board := softSudoku.NewSudoku()
+	err := board.SetValue(0, 5, 5)
+	if err == nil {
+		t.Error("SetValue(0,5,5) should have failed!")
+	}
+	err = board.SetValue(10, 5, 5)
+	if err == nil {
+		t.Error("SetValue(10,5,5) should have failed!")
+	}
+	err = board.SetValue(5, 0, 5)
+	if err == nil {
+		t.Error("SetValue(5,0,5) should have failed!")
+	}
+	err = board.SetValue(5, 10, 5)
+	if err == nil {
+		t.Error("SetValue(5,10,5) should have failed!")
+	}
+	err = board.SetValue(5, 5, 0)
+	if err == nil {
+		t.Error("SetValue(5,5,0) should have failed!")
+	}
+	err = board.SetValue(5, 5, 10)
+	if err == nil {
+		t.Error("SetValue(5,5,10) should have failed!")
+	}
+}
+
+//
+// GetGiven/SetGiven functions
+//
+
+// TestGetSetGiven : Test to get and set a given cell value
+func TestGetSetGiven(t *testing.T) {
 	board := softSudoku.NewSudoku()
 	for r := 1; r <= 9; r++ {
 		for c := 1; c <= 9; c++ {
@@ -84,6 +124,31 @@ func TestGiven(t *testing.T) {
 				}
 			}
 		}
+	}
+}
+
+// TestGetGivenFail : Test to get a given cell value with invalid row/column
+func TestGetGivenFail(t *testing.T) {
+	board := softSudoku.NewSudoku()
+	// Invalid row : 0
+	_,err:=board.GetGiven(0, 5)
+	if err==nil {
+		t.Errorf("GetGiven(0,5) should fail!")
+	}
+	// Invalid row : 10
+	_,err=board.GetGiven(10, 5)
+	if err==nil {
+		t.Errorf("GetGiven(10,5) should fail!")
+	}
+	// Invalid column : 0
+	_,err=board.GetGiven(5, 0)
+	if err==nil {
+		t.Errorf("GetGiven(5,0) should fail!")
+	}
+	// Invalid column : 10
+	_,err=board.GetGiven(5, 10)
+	if err==nil {
+		t.Errorf("GetGiven(5,10) should fail!")
 	}
 }
 
@@ -122,7 +187,11 @@ func TestSetGivenFail(t *testing.T) {
 	}
 }
 
-// TestBoxNotations : Test to get and set box notations
+//
+// ToggleBoxNotation function
+//
+
+// TestBoxNotations : Test to toggle box notations
 func TestBoxNotations(t *testing.T) {
 	board := softSudoku.NewSudoku()
 	for r := 1; r <= 9; r++ {
@@ -146,7 +215,40 @@ func TestBoxNotations(t *testing.T) {
 	}
 }
 
-// TestCellNotations : Test to get and set cell notations
+// TestBoxNotationsFail : Test to toggle box notations with invalid parameters
+func TestBoxNotationsFail(t *testing.T) {
+	board := softSudoku.NewSudoku()
+	err:=board.ToggleBoxNotation(0, 1, 2)
+	if err==nil {
+		t.Errorf("Change box notations with invalid row/column should have failed!")
+	}
+	err=board.ToggleBoxNotation(10, 1, 2)
+	if err==nil {
+		t.Errorf("Change box notations with invalid row/column should have failed!")
+	}
+	err=board.ToggleBoxNotation(1, 0, 2)
+	if err==nil {
+		t.Errorf("Change box notations with invalid row/column should have failed!")
+	}
+	err=board.ToggleBoxNotation(1, 10, 2)
+	if err==nil {
+		t.Errorf("Change box notations with invalid row/column should have failed!")
+	}
+	err=board.ToggleBoxNotation(1, 2, 0)
+	if err==nil {
+		t.Errorf("Change box notations with invalid value should have failed!")
+	}
+	err=board.ToggleBoxNotation(1, 2, 10)
+	if err==nil {
+		t.Errorf("Change box notations with invalid value should have failed!")
+	}
+}
+
+//
+// ToggleCellNotation function
+//
+
+// TestCellNotations : Test to toggle cell notations
 func TestCellNotations(t *testing.T) {
 	board := softSudoku.NewSudoku()
 	for r := 1; r <= 9; r++ {
@@ -170,6 +272,39 @@ func TestCellNotations(t *testing.T) {
 	}
 }
 
+// TestCellNotationsFail : Test to toggle cell notations with invalid parameters
+func TestCellNotationsFail(t *testing.T) {
+	board := softSudoku.NewSudoku()
+	err:=board.ToggleCellNotation(0, 1, 2)
+	if err==nil {
+		t.Errorf("Change cell notations with invalid row/column should have failed!")
+	}
+	err=board.ToggleCellNotation(10, 1, 2)
+	if err==nil {
+		t.Errorf("Change cell notations with invalid row/column should have failed!")
+	}
+	err=board.ToggleCellNotation(1, 0, 2)
+	if err==nil {
+		t.Errorf("Change cell notations with invalid row/column should have failed!")
+	}
+	err=board.ToggleCellNotation(1, 10, 2)
+	if err==nil {
+		t.Errorf("Change cell notations with invalid row/column should have failed!")
+	}
+	err=board.ToggleCellNotation(1, 2, 0)
+	if err==nil {
+		t.Errorf("Change cell notations with invalid value should have failed!")
+	}
+	err=board.ToggleCellNotation(1, 2, 10)
+	if err==nil {
+		t.Errorf("Change cell notations with invalid value should have failed!")
+	}
+}
+
+//
+// IsFull function
+//
+
 // TestIsNotFull : Test IsFull function on an empty game
 func TestIsNotFull(t *testing.T) {
 	board := softSudoku.NewSudoku()
@@ -185,7 +320,10 @@ func TestIsNotFull(t *testing.T) {
 // TestIsFull : Test IsFull function on a completed game
 func TestIsFull(t *testing.T) {
 	board := softSudoku.NewSudoku()
-	setTestSudoku(board)
+	err:=setTestSudoku(board)
+	if err!=nil {
+		t.Error(err)
+	}
 
 	got, err := board.IsFull()
 	if err != nil {

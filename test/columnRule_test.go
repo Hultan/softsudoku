@@ -5,12 +5,11 @@ import (
 	"testing"
 )
 
-// TestRowRulesFull : Add and check all rows in a test sudoku game
-func TestRowRulesFull(t *testing.T) {
+// TestColumnRulesEmpty : Add and check all columns in an empty sudoku game
+func TestColumnRulesEmpty(t *testing.T) {
 	sudoku := softSudoku.NewSudoku()
-	setTestSudoku(sudoku)
-	for row:=1;row<=9;row++ {
-		rule, err := softSudoku.NewRowRule(row)
+	for col:=1;col<=9;col++ {
+		rule, err := softSudoku.NewColumnRule(col)
 		if err != nil {
 			t.Error(err)
 		}
@@ -23,14 +22,18 @@ func TestRowRulesFull(t *testing.T) {
 		t.Error(err)
 	}
 	if got==false {
-		t.Errorf("Board should not violate the row rule!")
+		t.Errorf("Empty board should not violate the column rule!")
 	}
 }
 
-// TestColumnRulesFull : Add and check all columns in a test sudoku game
-func TestColumnRulesFull(t *testing.T) {
+// TestColumnRules : Add and check all columns in a test sudoku game
+func TestColumnRules(t *testing.T) {
 	sudoku := softSudoku.NewSudoku()
-	setTestSudoku(sudoku)
+	err:=setTestSudoku(sudoku)
+	if err!=nil {
+		t.Error(err)
+	}
+
 	for col:=1;col<=9;col++ {
 		rule, err := softSudoku.NewColumnRule(col)
 		if err != nil {
@@ -49,12 +52,15 @@ func TestColumnRulesFull(t *testing.T) {
 	}
 }
 
-// TestBoxRulesFull : Add and check all boxes in a test sudoku game
-func TestBoxRulesFull(t *testing.T) {
+// TestColumnRulesFail : Add and check all columns in a test sudoku game
+func TestColumnRulesFail(t *testing.T) {
 	sudoku := softSudoku.NewSudoku()
-	setTestSudoku(sudoku)
-	for box:=1;box<=9;box++ {
-		rule, err := softSudoku.NewBoxRule(box)
+	err:=setInvalidTestSudoku(sudoku)
+	if err!=nil {
+		t.Error(err)
+	}
+	for col:=1;col<=9;col++ {
+		rule, err := softSudoku.NewColumnRule(col)
 		if err != nil {
 			t.Error(err)
 		}
@@ -66,7 +72,8 @@ func TestBoxRulesFull(t *testing.T) {
 	if err!=nil {
 		t.Error(err)
 	}
-	if got==false {
-		t.Errorf("Board should not violate the box rule!")
+	if got==true {
+		t.Errorf("Board should violate the column rule!")
 	}
 }
+
