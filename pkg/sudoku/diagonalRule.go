@@ -6,19 +6,23 @@ import (
 )
 
 type DiagonalRule struct {
-	StartingCorner Corner
+	startingCorner Corner
 }
 
 // NewDiagonalRule : Create a new DiagonalRule
 func NewDiagonalRule(startingCorner Corner) (*DiagonalRule, error) {
 	if startingCorner < 0 || startingCorner > 3 {
-		return nil, errors.New(fmt.Sprintf("Invalid starting corner (valid: 0-3) : %v", startingCorner))
+		return nil, errors.New(fmt.Sprintf("invalid starting corner (valid: 0-3) : %v", startingCorner))
 	}
 
 	rule := new(DiagonalRule)
-	rule.StartingCorner = startingCorner
+	rule.startingCorner = startingCorner
 
 	return rule, nil
+}
+
+func (d *DiagonalRule) GetStartingCorner() Corner {
+ 	return d.startingCorner
 }
 
 // Check : Check if column n rule is broken
@@ -28,7 +32,7 @@ func (r *DiagonalRule) Check(sudoku *Sudoku) (bool, error) {
 	var err error
 
 	for i := 1; i <= 9; i++ {
-		if r.StartingCorner == UpperLeftCorner || r.StartingCorner == LowerRightCorner {
+		if r.startingCorner == UpperLeftCorner || r.startingCorner == LowerRightCorner {
 			value, err = sudoku.GetValue(i, i)
 		} else {
 			value, err = sudoku.GetValue(i, 10-i)

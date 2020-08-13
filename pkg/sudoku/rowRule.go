@@ -6,19 +6,23 @@ import (
 )
 
 type RowRule struct {
-	Row int
+	row int
 }
 
 // NewRowRule : Create a new RowRule
 func NewRowRule(row int) (*RowRule, error) {
 	if row<1 || row>9 {
-		return nil, errors.New(fmt.Sprintf("Invalid row : %v", row))
+		return nil, errors.New(fmt.Sprintf("invalid row : %v", row))
 	}
 
 	rule := new(RowRule)
-	rule.Row = row
+	rule.row = row
 
 	return rule, nil
+}
+
+func (r *RowRule) GetRow() int {
+	return r.row
 }
 
 // Check : Check if row n rule is broken
@@ -26,7 +30,7 @@ func (r *RowRule) Check(sudoku *Sudoku) (bool, error) {
 	result := make(map[int]bool)
 
 	for col:=1;col<=9;col++ {
-		value, err := sudoku.GetValue(r.Row, col)
+		value, err := sudoku.GetValue(r.row, col)
 		if err!=nil {
 			return false, err
 		}

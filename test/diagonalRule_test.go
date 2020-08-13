@@ -9,20 +9,20 @@ import (
 func TestDiagonalRulesEmpty(t *testing.T) {
 	sudoku := softSudoku.NewSudoku()
 	rule, err := softSudoku.NewDiagonalRule(softSudoku.UpperLeftCorner)
-	if err != nil {
-		t.Error(err)
+	errorCheck(err, t)
+	if rule.GetStartingCorner()!=softSudoku.UpperLeftCorner {
+		t.Errorf("Rule.GetStartingCorner() should have been UpperLeftCorner")
 	}
 	sudoku.AddRule(rule)
 	rule, err = softSudoku.NewDiagonalRule(softSudoku.LowerRightCorner)
-	if err != nil {
-		t.Error(err)
+	errorCheck(err, t)
+	if rule.GetStartingCorner()!=softSudoku.LowerRightCorner {
+		t.Errorf("Rule.GetStartingCorner() should have been LowerRightCorner")
 	}
 	sudoku.AddRule(rule)
 
 	got, err := sudoku.CheckRules()
-	if err!=nil {
-		t.Error(err)
-	}
+	errorCheck(err, t)
 	if got==false {
 		t.Errorf("Empty board should not violate the row rule!")
 	}
@@ -33,27 +33,19 @@ func TestDiagonalRule(t *testing.T) {
 	// Set up sudoku
 	sudoku := softSudoku.NewSudoku()
 	err:=setDiagonalTestSudoku(sudoku)
-	if err!=nil {
-		t.Error(err)
-	}
+	errorCheck(err, t)
 
 	// Add two diagonal rules
 	rule, err := softSudoku.NewDiagonalRule(softSudoku.UpperLeftCorner)
-	if err != nil {
-		t.Error(err)
-	}
+	errorCheck(err, t)
 	sudoku.AddRule(rule)
 	rule, err = softSudoku.NewDiagonalRule(softSudoku.UpperRightCorner)
-	if err != nil {
-		t.Error(err)
-	}
+	errorCheck(err, t)
 	sudoku.AddRule(rule)
 
 	// Check rules
 	got, err := sudoku.CheckRules()
-	if err!=nil {
-		t.Error(err)
-	}
+	errorCheck(err, t)
 	if got==false {
 		t.Errorf("Sudoku should not violate the diagonal rule!")
 	}
@@ -65,27 +57,19 @@ func TestDiagonalRuleFail(t *testing.T) {
 	// Set up sudoku
 	sudoku := softSudoku.NewSudoku()
 	err:=setInvalidDiagonalTestSudoku(sudoku)
-	if err!=nil {
-		t.Error(err)
-	}
+	errorCheck(err, t)
 
 	// Add two diagonal rules
 	rule, err := softSudoku.NewDiagonalRule(softSudoku.UpperLeftCorner)
-	if err != nil {
-		t.Error(err)
-	}
+	errorCheck(err, t)
 	sudoku.AddRule(rule)
 	rule, err = softSudoku.NewDiagonalRule(softSudoku.UpperRightCorner)
-	if err != nil {
-		t.Error(err)
-	}
+	errorCheck(err, t)
 	sudoku.AddRule(rule)
 
 	// Check rules
 	got, err := sudoku.CheckRules()
-	if err!=nil {
-		t.Error(err)
-	}
+	errorCheck(err, t)
 	if got==true {
 		t.Errorf("Invalid sudoku should violate the diagonal rule!")
 	}

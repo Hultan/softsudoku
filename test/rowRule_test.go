@@ -10,17 +10,15 @@ func TestRowRulesEmpty(t *testing.T) {
 	sudoku := softSudoku.NewSudoku()
 	for row:=1;row<=9;row++ {
 		rule, err := softSudoku.NewRowRule(row)
-		if err != nil {
-			t.Error(err)
+		errorCheck(err, t)
+		if rule.GetRow()!=row {
+			t.Errorf("Rule.GetRow() should have been %d", row)
 		}
-
 		sudoku.AddRule(rule)
 	}
 
 	got, err := sudoku.CheckRules()
-	if err!=nil {
-		t.Error(err)
-	}
+	errorCheck(err, t)
 	if got==false {
 		t.Errorf("Empty board should not violate the row rule!")
 	}
@@ -30,22 +28,16 @@ func TestRowRulesEmpty(t *testing.T) {
 func TestRowRules(t *testing.T) {
 	sudoku := softSudoku.NewSudoku()
 	err:=setTestSudoku(sudoku)
-	if err!=nil {
-		t.Error(err)
-	}
+	errorCheck(err, t)
 	for row:=1;row<=9;row++ {
 		rule, err := softSudoku.NewRowRule(row)
-		if err != nil {
-			t.Error(err)
-		}
+		errorCheck(err, t)
 
 		sudoku.AddRule(rule)
 	}
 
 	got, err := sudoku.CheckRules()
-	if err!=nil {
-		t.Error(err)
-	}
+	errorCheck(err, t)
 	if got==false {
 		t.Errorf("Board should not violate the row rule!")
 	}
@@ -55,22 +47,16 @@ func TestRowRules(t *testing.T) {
 func TestRowRulesFail(t *testing.T) {
 	sudoku := softSudoku.NewSudoku()
 	err:=setInvalidTestSudoku(sudoku)
-	if err!=nil {
-		t.Error(err)
-	}
+	errorCheck(err, t)
 	for row:=1;row<=9;row++ {
 		rule, err := softSudoku.NewRowRule(row)
-		if err != nil {
-			t.Error(err)
-		}
+		errorCheck(err, t)
 
 		sudoku.AddRule(rule)
 	}
 
 	got, err := sudoku.CheckRules()
-	if err!=nil {
-		t.Error(err)
-	}
+	errorCheck(err, t)
 	if got==true {
 		t.Errorf("Board should violate the row rule!")
 	}

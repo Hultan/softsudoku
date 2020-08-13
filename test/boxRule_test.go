@@ -10,17 +10,15 @@ func TestBoxRulesEmpty(t *testing.T) {
 	sudoku := softSudoku.NewSudoku()
 	for box:=1;box<=9;box++ {
 		rule, err := softSudoku.NewBoxRule(box)
-		if err != nil {
-			t.Error(err)
+		errorCheck(err, t)
+		if rule.GetBox()!=box {
+			t.Errorf("Rule.GetBox() should have been %d", box)
 		}
-
 		sudoku.AddRule(rule)
 	}
 
 	got, err := sudoku.CheckRules()
-	if err!=nil {
-		t.Error(err)
-	}
+	errorCheck(err, t)
 	if got==false {
 		t.Errorf("Empty board should not violate the box rule!")
 	}
@@ -30,23 +28,17 @@ func TestBoxRulesEmpty(t *testing.T) {
 func TestBoxRules(t *testing.T) {
 	sudoku := softSudoku.NewSudoku()
 	err:=setTestSudoku(sudoku)
-	if err!=nil {
-		t.Error(err)
-	}
+	errorCheck(err, t)
 
 	for box:=1;box<=9;box++ {
 		rule, err := softSudoku.NewBoxRule(box)
-		if err != nil {
-			t.Error(err)
-		}
+		errorCheck(err, t)
 
 		sudoku.AddRule(rule)
 	}
 
 	got, err := sudoku.CheckRules()
-	if err!=nil {
-		t.Error(err)
-	}
+	errorCheck(err, t)
 	if got==false {
 		t.Errorf("Board should not violate the box rule!")
 	}
@@ -56,22 +48,16 @@ func TestBoxRules(t *testing.T) {
 func TestBoxRulesFail(t *testing.T) {
 	sudoku := softSudoku.NewSudoku()
 	err:=setInvalidTestSudoku(sudoku)
-	if err!=nil {
-		t.Error(err)
-	}
+	errorCheck(err, t)
 	for box:=1;box<=9;box++ {
 		rule, err := softSudoku.NewBoxRule(box)
-		if err != nil {
-			t.Error(err)
-		}
+		errorCheck(err, t)
 
 		sudoku.AddRule(rule)
 	}
 
 	got, err := sudoku.CheckRules()
-	if err!=nil {
-		t.Error(err)
-	}
+	errorCheck(err, t)
 	if got==true {
 		t.Errorf("Board should violate the box rule!")
 	}

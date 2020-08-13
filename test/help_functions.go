@@ -3,6 +3,7 @@ package sudoku
 import (
 	softSudoku "github.com/hultan/softsudoku/pkg/sudoku"
 	"math/rand"
+	"testing"
 	"time"
 )
 
@@ -90,4 +91,10 @@ func setDiagonalTestSudoku(sudoku *softSudoku.Sudoku) error {
 		return err
 	}
 	return nil
+}
+
+func errorCheck(err error, t *testing.T) {
+	if err!=nil {
+		t.Error(err)
+	}
 }

@@ -10,17 +10,17 @@ func TestColumnRulesEmpty(t *testing.T) {
 	sudoku := softSudoku.NewSudoku()
 	for col:=1;col<=9;col++ {
 		rule, err := softSudoku.NewColumnRule(col)
-		if err != nil {
-			t.Error(err)
+		errorCheck(err,t)
+
+		if rule.GetColumn()!=col {
+			t.Errorf("Rule.GetColumn() should have been %d", col)
 		}
 
 		sudoku.AddRule(rule)
 	}
 
 	got, err := sudoku.CheckRules()
-	if err!=nil {
-		t.Error(err)
-	}
+	errorCheck(err,t)
 	if got==false {
 		t.Errorf("Empty board should not violate the column rule!")
 	}
@@ -30,23 +30,17 @@ func TestColumnRulesEmpty(t *testing.T) {
 func TestColumnRules(t *testing.T) {
 	sudoku := softSudoku.NewSudoku()
 	err:=setTestSudoku(sudoku)
-	if err!=nil {
-		t.Error(err)
-	}
+	errorCheck(err,t)
 
 	for col:=1;col<=9;col++ {
 		rule, err := softSudoku.NewColumnRule(col)
-		if err != nil {
-			t.Error(err)
-		}
+		errorCheck(err,t)
 
 		sudoku.AddRule(rule)
 	}
 
 	got, err := sudoku.CheckRules()
-	if err!=nil {
-		t.Error(err)
-	}
+	errorCheck(err,t)
 	if got==false {
 		t.Errorf("Board should not violate the column rule!")
 	}
@@ -56,22 +50,16 @@ func TestColumnRules(t *testing.T) {
 func TestColumnRulesFail(t *testing.T) {
 	sudoku := softSudoku.NewSudoku()
 	err:=setInvalidTestSudoku(sudoku)
-	if err!=nil {
-		t.Error(err)
-	}
+	errorCheck(err,t)
 	for col:=1;col<=9;col++ {
 		rule, err := softSudoku.NewColumnRule(col)
-		if err != nil {
-			t.Error(err)
-		}
+		errorCheck(err,t)
 
 		sudoku.AddRule(rule)
 	}
 
 	got, err := sudoku.CheckRules()
-	if err!=nil {
-		t.Error(err)
-	}
+	errorCheck(err,t)
 	if got==true {
 		t.Errorf("Board should violate the column rule!")
 	}

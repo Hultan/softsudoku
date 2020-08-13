@@ -5,6 +5,11 @@ import (
 	"fmt"
 )
 
+type Cell struct {
+	Row int
+	Column int
+}
+
 type Sudoku struct {
 	grid     [9][9]int
 	given    [9][9]bool

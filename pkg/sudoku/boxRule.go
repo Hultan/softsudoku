@@ -6,26 +6,30 @@ import (
 )
 
 type BoxRule struct {
-	Box int
+	box int
 }
 
 // NewBoxRule : Create a new BoxRule
 func NewBoxRule(box int) (*BoxRule, error) {
 	if box < 1 || box > 9 {
-		return nil, errors.New(fmt.Sprintf("Invalid box : %v", box))
+		return nil, errors.New(fmt.Sprintf("invalid box : %v", box))
 	}
 
 	rule := new(BoxRule)
-	rule.Box = box
+	rule.box = box
 
 	return rule, nil
+}
+
+func (b *BoxRule) GetBox() int {
+	return b.box
 }
 
 // Check : Check if box n rule is broken
 func (r *BoxRule) Check(sudoku *Sudoku) (bool, error) {
 	result := make(map[int]bool)
-	startRow := (r.Box - 1) / 3 * 3
-	startCol := (r.Box - 1) % 3 * 3
+	startRow := (r.box - 1) / 3 * 3
+	startCol := (r.box - 1) % 3 * 3
 
 	for row := 1; row <= 3; row++ {
 		for col := 1; col <= 3; col++ {
