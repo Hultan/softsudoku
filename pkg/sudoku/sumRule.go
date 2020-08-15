@@ -7,8 +7,8 @@ import (
 )
 
 type SumRule struct {
-	sum int
-	cells []Cell
+	sum             int
+	cells           []Cell
 	digitsCanRepeat bool
 	backgroundColor color.Color
 }
@@ -23,18 +23,18 @@ func NewSumRule(sum int, cells []Cell, digitsCanRepeat bool, backgroundColor col
 		return nil, errors.New(fmt.Sprintf("sum too large for %d cells", len(cells)))
 	}
 	rule.sum = sum
-	for index,cell := range cells {
-		if cell.Row<1 {
-			return nil, errors.New(fmt.Sprintf("row too small in cell %d", index))
+	for index, cell := range cells {
+		if cell.Row < 1 {
+			return nil, errors.New(fmt.Sprintf("row too small in cell %d", index+1))
 		}
-		if cell.Row>9 {
-			return nil, errors.New(fmt.Sprintf("row too large in cell %d", index))
+		if cell.Row > 9 {
+			return nil, errors.New(fmt.Sprintf("row too large in cell %d", index+1))
 		}
-		if cell.Column<1 {
-			return nil, errors.New(fmt.Sprintf("column too small in cell %d", index))
+		if cell.Column < 1 {
+			return nil, errors.New(fmt.Sprintf("column too small in cell %d", index+1))
 		}
-		if cell.Column>9 {
-			return nil, errors.New(fmt.Sprintf("column too large in cell %d", index))
+		if cell.Column > 9 {
+			return nil, errors.New(fmt.Sprintf("column too large in cell %d", index+1))
 		}
 	}
 	rule.cells = cells
@@ -64,9 +64,9 @@ func (s *SumRule) Check(sudoku *Sudoku) (bool, error) {
 	var sum int
 	var digit [9]bool
 
-	for _,cell := range s.cells {
+	for _, cell := range s.cells {
 		value, err := sudoku.GetValue(cell.Row, cell.Column)
-		if err!=nil {
+		if err != nil {
 			return false, err
 		}
 		sum += value

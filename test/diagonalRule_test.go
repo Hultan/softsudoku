@@ -72,6 +72,5 @@ func TestDiagonalRuleFail(t *testing.T) {
 	errorCheck(err, t)
 	if got==true {
 		t.Errorf("Invalid sudoku should violate the diagonal rule!")
-		
 	}
 }
